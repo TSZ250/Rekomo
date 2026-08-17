@@ -221,8 +221,12 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 .hero-lead { font-size: 18px; max-width: 40ch; margin-bottom: 36px; }
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
 
+/* ---------- Varför ---------- */
+.varfor-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+.varfor-inner .kicker { justify-content: center; }
+.varfor-inner p { margin-left: auto; margin-right: auto; }
+
 /* ---------- Om oss ---------- */
-.section-bordered { border-top: 1px solid var(--border); }
 .om-oss-inner { max-width: 640px; margin: 0 auto; text-align: center; }
 .om-oss-inner .kicker { justify-content: center; }
 .om-oss-inner > p { margin-left: auto; margin-right: auto; }
