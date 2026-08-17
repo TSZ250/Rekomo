@@ -41,9 +41,83 @@ if ('IntersectionObserver' in window && revealEls.length) {
   revealEls.forEach((el) => el.classList.add('visible'));
 }
 
-// Subtle magnetic pull on buttons (desktop/mouse only, respects reduced-motion)
+// Scroll progress bar + header shadow-on-scroll (rAF-throttled)
+const progressBar = document.getElementById('scrollProgress');
+const header = document.querySelector('.site-header');
+let scrollTicking = false;
+
+function onScroll() {
+  if (scrollTicking) return;
+  scrollTicking = true;
+  window.requestAnimationFrame(() => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
+
+    if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
+    if (header) header.classList.toggle('scrolled', scrollTop > 8);
+
+    scrollTicking = false;
+  });
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// Active nav link tracks the section currently in view
+const navLinks = document.querySelectorAll('.nav a[href^="#"]');
+const trackedSections = document.querySelectorAll('main section[id]');
+
+if ('IntersectionObserver' in window && navLinks.length && trackedSections.length) {
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach((link) => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      });
+    },
+    { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+  );
+
+  trackedSections.forEach((section) => sectionObserver.observe(section));
+
+  // While still up in the hero (before the first tracked section), no nav link is "current"
+  const firstSectionTop = trackedSections[0].offsetTop;
+  window.addEventListener(
+    'scroll',
+    () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      if (scrollTop < firstSectionTop - window.innerHeight * 0.45) {
+        navLinks.forEach((link) => link.classList.remove('active'));
+      }
+    },
+    { passive: true }
+  );
+}
+
+// Subtle magnetic pull on buttons + interactive tilt on product photos
+// (desktop/mouse only, respects reduced-motion)
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+function initTilt(selector, maxDeg) {
+  document.querySelectorAll(selector).forEach((el) => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+      const rx = (0.5 - py) * maxDeg * 2;
+      const ry = (px - 0.5) * maxDeg * 2;
+      el.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+    });
+  });
+}
 
 if (hasFinePointer && !prefersReducedMotion) {
   document.querySelectorAll('.btn').forEach((btn) => {
@@ -57,4 +131,8 @@ if (hasFinePointer && !prefersReducedMotion) {
       btn.style.transform = '';
     });
   });
+
+  initTilt('.device-frame', 7);
+  initTilt('.card-stack', 7);
+  initTilt('.usage-photo', 5);
 }
