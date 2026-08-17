@@ -100,39 +100,72 @@ if ('IntersectionObserver' in window && navLinks.length && trackedSections.lengt
 
 // Subtle magnetic pull on buttons + interactive tilt on product photos
 // (desktop/mouse only, respects reduced-motion)
+//
+// mousemove can fire 60-120+ times/second. Writing a new transform straight
+// into a CSS-transitioned property on every single event constantly
+// interrupts/restarts that transition, which reads as jittery/shaky rather
+// than smooth. Instead we only record a *target* on mousemove, and a single
+// requestAnimationFrame loop lerps every tracked element's current value
+// toward its target each frame — this decouples input frequency from
+// render frequency and gives naturally damped, jitter-free motion.
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
 
-function initTilt(selector, maxDeg) {
-  document.querySelectorAll(selector).forEach((el) => {
-    el.addEventListener('mousemove', (e) => {
-      const rect = el.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width;
-      const py = (e.clientY - rect.top) / rect.height;
-      const rx = (0.5 - py) * maxDeg * 2;
-      const ry = (px - 0.5) * maxDeg * 2;
-      el.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
-    });
-    el.addEventListener('mouseleave', () => {
-      el.style.transform = '';
-    });
+const LERP = 0.15;
+const magneticStates = [];
+const tiltStates = [];
+
+function setupMagnetic(el) {
+  const state = { el, tx: 0, ty: 0, cx: 0, cy: 0 };
+  el.addEventListener('mousemove', (e) => {
+    const rect = el.getBoundingClientRect();
+    state.tx = (e.clientX - rect.left - rect.width / 2) * 0.25;
+    state.ty = (e.clientY - rect.top - rect.height / 2) * 0.35;
   });
+  el.addEventListener('mouseleave', () => {
+    state.tx = 0;
+    state.ty = 0;
+  });
+  magneticStates.push(state);
+}
+
+function setupTilt(el, maxDeg) {
+  const state = { el, trx: 0, trry: 0, crx: 0, cry: 0 };
+  el.addEventListener('mousemove', (e) => {
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    state.trx = (0.5 - py) * maxDeg * 2;
+    state.trry = (px - 0.5) * maxDeg * 2;
+  });
+  el.addEventListener('mouseleave', () => {
+    state.trx = 0;
+    state.trry = 0;
+  });
+  tiltStates.push(state);
+}
+
+function animateInteractions() {
+  magneticStates.forEach((s) => {
+    s.cx += (s.tx - s.cx) * LERP;
+    s.cy += (s.ty - s.cy) * LERP;
+    s.el.style.transform = `translate(${s.cx.toFixed(2)}px, ${s.cy.toFixed(2)}px)`;
+  });
+  tiltStates.forEach((s) => {
+    s.crx += (s.trx - s.crx) * LERP;
+    s.cry += (s.trry - s.cry) * LERP;
+    s.el.style.transform = `perspective(900px) rotateX(${s.crx.toFixed(2)}deg) rotateY(${s.cry.toFixed(2)}deg)`;
+  });
+  requestAnimationFrame(animateInteractions);
 }
 
 if (hasFinePointer && !prefersReducedMotion) {
-  document.querySelectorAll('.btn').forEach((btn) => {
-    btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      btn.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = '';
-    });
-  });
+  document.documentElement.classList.add('fine-pointer');
 
-  initTilt('.device-frame', 7);
-  initTilt('.card-stack', 7);
-  initTilt('.usage-photo', 5);
+  document.querySelectorAll('.btn').forEach(setupMagnetic);
+  document.querySelectorAll('.device-frame').forEach((el) => setupTilt(el, 6));
+  document.querySelectorAll('.card-stack').forEach((el) => setupTilt(el, 6));
+  document.querySelectorAll('.usage-photo').forEach((el) => setupTilt(el, 4));
+
+  requestAnimationFrame(animateInteractions);
 }

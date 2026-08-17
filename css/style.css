@@ -110,6 +110,11 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   transition: transform 0.2s var(--ease), background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   will-change: transform;
 }
+/* Mouse users get the transform driven frame-by-frame by the JS lerp loop
+   (see js/script.js) instead of a CSS transition, so the two don't fight
+   and cause jitter. Touch/reduced-motion users keep the plain CSS transition
+   above for a smooth :hover fallback. */
+.fine-pointer .btn { transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
 .btn-primary {
   background: var(--text);
   color: var(--bg);
@@ -269,6 +274,7 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   justify-content: center;
   transition: transform 0.2s ease-out;
 }
+.fine-pointer .device-frame { transition: none; }
 .device-frame::before {
   content: '';
   position: absolute;
@@ -309,6 +315,7 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 
 /* Two-card stack for the product section */
 .card-stack { position: relative; width: 260px; height: 300px; transition: transform 0.2s ease-out; }
+.fine-pointer .card-stack { transition: none; }
 .stack-photo {
   position: absolute;
   width: clamp(140px, 20vw, 185px);
@@ -329,6 +336,7 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.6);
   transition: transform 0.2s ease-out;
 }
+.fine-pointer .usage-photo { transition: none; }
 
 /* ---------- Hur funkar det: photo + steps ---------- */
 .hur-grid {
