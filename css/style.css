@@ -139,6 +139,9 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 }
 .btn-ghost:hover { color: var(--bg); border-color: var(--text); }
 .btn-ghost:hover::before { transform: scaleX(1); }
+.section-dark .btn-ghost { color: var(--text-invert); border-color: var(--border-dark); }
+.section-dark .btn-ghost::before { background: var(--text-invert); }
+.section-dark .btn-ghost:hover { color: var(--bg-dark); border-color: var(--text-invert); }
 
 /* ---------- Scroll progress ---------- */
 .scroll-progress {
@@ -449,6 +452,8 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   transition: opacity 0.2s ease;
 }
 .contact-list a:hover { opacity: 0.65; }
+
+.contact-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
 /* ---------- Footer ---------- */
 .site-footer { padding: 26px 0; }
