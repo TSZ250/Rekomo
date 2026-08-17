@@ -20,8 +20,8 @@ if (navToggle && nav) {
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// Reveal-on-scroll animations
-const revealEls = document.querySelectorAll('.reveal');
+// Reveal-on-scroll animations (single elements + grouped/staggered lists)
+const revealEls = document.querySelectorAll('.reveal, .reveal-group');
 
 if ('IntersectionObserver' in window && revealEls.length) {
   const observer = new IntersectionObserver(
@@ -39,4 +39,22 @@ if ('IntersectionObserver' in window && revealEls.length) {
   revealEls.forEach((el) => observer.observe(el));
 } else {
   revealEls.forEach((el) => el.classList.add('visible'));
+}
+
+// Subtle magnetic pull on buttons (desktop/mouse only, respects reduced-motion)
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+if (hasFinePointer && !prefersReducedMotion) {
+  document.querySelectorAll('.btn').forEach((btn) => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
 }
