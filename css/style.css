@@ -22,22 +22,22 @@ body::before {
   inset: 0;
   z-index: 999;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.035;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nMC44NScgbnVtT2N0YXZlcz0nMicgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjxmZUNvbG9yTWF0cml4IHR5cGU9J3NhdHVyYXRlJyB2YWx1ZXM9JzAnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCglMjNuKScvPjwvc3ZnPgo=");
 }
 
-/* ---------- Design tokens (black & white, warm off-tones) ---------- */
+/* ---------- Design tokens (true, neutral black & white) ---------- */
 :root {
-  --bg: #fbfbfa;
-  --text: #111110;
-  --muted: #6c6c68;
-  --border: #e4e3df;
+  --bg: #ffffff;
+  --text: #0a0a0a;
+  --muted: #6e6e6e;
+  --border: #e5e5e5;
 
-  --bg-dark: #0c0c0b;
-  --text-invert: #fbfbfa;
-  --muted-invert: #9c9c97;
-  --border-dark: #262624;
+  --bg-dark: #050505;
+  --text-invert: #ffffff;
+  --muted-invert: #9a9a9a;
+  --border-dark: #272727;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -145,7 +145,7 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(251, 251, 250, 0.82);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--border);
 }
@@ -223,11 +223,11 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   position: absolute;
   width: 120px; height: 60px;
   bottom: 22px;
-  background: radial-gradient(ellipse, rgba(17, 17, 16, 0.18) 0%, transparent 72%);
+  background: radial-gradient(ellipse, rgba(10, 10, 10, 0.18) 0%, transparent 72%);
   filter: blur(6px);
   animation: breathe 4.5s ease-in-out infinite;
 }
-.section-dark .device-frame::after { background: radial-gradient(ellipse, rgba(251, 251, 250, 0.14) 0%, transparent 72%); }
+.section-dark .device-frame::after { background: radial-gradient(ellipse, rgba(255, 255, 255, 0.14) 0%, transparent 72%); }
 
 @keyframes breathe {
   0%, 100% { opacity: 0.6; transform: scale(1); }
