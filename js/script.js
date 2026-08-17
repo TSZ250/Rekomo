@@ -8,7 +8,6 @@ if (navToggle && nav) {
     navToggle.setAttribute('aria-expanded', String(isOpen));
   });
 
-  // Close menu when a link is clicked (mobile)
   nav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
       nav.classList.remove('open');
@@ -21,25 +20,23 @@ if (navToggle && nav) {
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// Contact form -> opens the visitor's email client with a prefilled message
-const form = document.getElementById('contactForm');
-const formNote = document.getElementById('formNote');
+// Reveal-on-scroll animations
+const revealEls = document.querySelectorAll('.reveal');
 
-if (form) {
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+if ('IntersectionObserver' in window && revealEls.length) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
+  );
 
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const message = form.message.value.trim();
-
-    const subject = encodeURIComponent(`Meddelande från ${name} via Rekomo`);
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-
-    window.location.href = `mailto:hip48741@gmail.com?subject=${subject}&body=${body}`;
-
-    if (formNote) {
-      formNote.textContent = 'Din e-postklient öppnas nu – tryck skicka där!';
-    }
-  });
+  revealEls.forEach((el) => observer.observe(el));
+} else {
+  revealEls.forEach((el) => el.classList.add('visible'));
 }

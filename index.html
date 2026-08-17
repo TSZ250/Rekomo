@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rekomo – Rekommendationer du kan lita på</title>
-  <meta name="description" content="Rekomo hjälper dig hitta och ge rekommendationer du kan lita på. Enkelt, snabbt och personligt." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤝</text></svg>" />
+  <title>Rekomo — NFC Google-recensioner med ett tryck</title>
+  <meta name="description" content="Rekomo är NFC-läsaren som tar era kunder direkt till Google-recensionssidan. Ingen app, ingen QR-kod." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%226%22 fill=%22black%22/><text x=%2212%22 y=%2217%22 font-size=%2214%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22sans-serif%22>R</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- Header -->
   <header class="site-header" id="top">
     <div class="container header-inner">
       <a href="#top" class="logo">
@@ -22,8 +21,8 @@
       </a>
 
       <nav class="nav" id="nav">
-        <a href="#om-oss">Om oss</a>
-        <a href="#vad-vi-gor">Vad vi gör</a>
+        <a href="#hur">Så funkar det</a>
+        <a href="#produkt">Produkten</a>
         <a href="#kontakt" class="nav-cta">Kontakta oss</a>
       </nav>
 
@@ -37,136 +36,108 @@
     <!-- Hero -->
     <section class="hero">
       <div class="container hero-inner">
-        <p class="eyebrow">Rekommendationer, förenklat</p>
-        <h1>Vi gör det enkelt att hitta <span class="accent">rätt</span>.</h1>
-        <p class="hero-lead">
-          Rekomo kopplar samman människor med rekommendationer de faktiskt kan lita på.
-          Vi tar bort krånglet – kvar blir bara det som funkar.
-        </p>
-        <div class="hero-actions">
-          <a href="#kontakt" class="btn btn-primary">Kontakta oss</a>
-          <a href="#vad-vi-gor" class="btn btn-ghost">Läs mer</a>
+        <div class="hero-copy reveal">
+          <p class="eyebrow">NFC · Google-recensioner</p>
+          <h1>Ett tryck.<br />Fler recensioner.</h1>
+          <p class="hero-lead">Rekomo tar era kunder direkt till Google — ingen app, ingen QR-kod.</p>
+          <div class="hero-actions">
+            <a href="#kontakt" class="btn btn-primary">Kontakta oss</a>
+            <a href="#hur" class="btn btn-ghost">Så funkar det</a>
+          </div>
         </div>
-      </div>
-      <div class="hero-glow" aria-hidden="true"></div>
-    </section>
 
-    <!-- Om oss -->
-    <section id="om-oss" class="section">
-      <div class="container about-grid">
-        <div class="about-text">
-          <p class="section-kicker">Om oss</p>
-          <h2>Kort om Rekomo</h2>
-          <p>
-            Rekomo startades med en enkel idé: bra rekommendationer ska vara lätta att både ge och hitta.
-            Vi bygger en pålitlig plattform där kvalitet går före kvantitet, och där varje rekommendation
-            faktiskt betyder något.
-          </p>
-          <p>
-            Oavsett om du letar efter någon att anlita eller vill lyfta fram något du själv gillar –
-            vi finns här för att göra det enkelt, snabbt och tryggt.
-          </p>
-        </div>
-        <div class="about-stats">
-          <div class="stat-card">
-            <span class="stat-number">100%</span>
-            <span class="stat-label">Fokus på kvalitet</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-number">1:1</span>
-            <span class="stat-label">Personlig kontakt</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-number">24/7</span>
-            <span class="stat-label">Nåbara digitalt</span>
+        <div class="hero-visual reveal" aria-hidden="true">
+          <span class="pulse-ring ring1"></span>
+          <span class="pulse-ring ring2"></span>
+          <span class="pulse-ring ring3"></span>
+          <div class="nfc-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <path d="M8 16c-2.5-2.5-2.5-6.5 0-9" />
+              <path d="M5 19c-4-4-4-10 0-14" opacity="0.55" />
+              <circle cx="14" cy="12" r="1.4" fill="currentColor" stroke="none" />
+            </svg>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Vad vi gör -->
-    <section id="vad-vi-gor" class="section section-alt">
+    <!-- Så funkar det -->
+    <section id="hur" class="section section-dark">
       <div class="container">
-        <p class="section-kicker">Vad vi gör</p>
-        <h2>Så hjälper vi dig</h2>
-        <div class="cards">
-          <article class="card">
-            <div class="card-icon">✨</div>
-            <h3>Trovärdiga rekommendationer</h3>
-            <p>Vi samlar och lyfter fram rekommendationer som håller – granskade och genuina.</p>
-          </article>
-          <article class="card">
-            <div class="card-icon">🤝</div>
-            <h3>Personlig matchning</h3>
-            <p>Vi lyssnar på vad du behöver och hjälper dig hitta rätt lösning, utan krångel.</p>
-          </article>
-          <article class="card">
-            <div class="card-icon">⚡</div>
-            <h3>Snabbt & enkelt</h3>
-            <p>Ingen onödig byråkrati. Du hör av dig, vi svarar – enkelt som det.</p>
-          </article>
+        <p class="section-kicker reveal">Så funkar det</p>
+        <div class="steps">
+          <div class="step reveal">
+            <span class="step-num">01</span>
+            <h3>Tryck telefonen mot Rekomo</h3>
+          </div>
+          <div class="step reveal">
+            <span class="step-num">02</span>
+            <h3>Google öppnas direkt</h3>
+          </div>
+          <div class="step reveal">
+            <span class="step-num">03</span>
+            <h3>Kunden lämnar sitt betyg</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Produkten -->
+    <section id="produkt" class="section">
+      <div class="container product-grid">
+        <div class="product-visual reveal" aria-hidden="true">
+          <div class="nfc-card nfc-card-static">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <path d="M8 16c-2.5-2.5-2.5-6.5 0-9" />
+              <path d="M5 19c-4-4-4-10 0-14" opacity="0.55" />
+              <circle cx="14" cy="12" r="1.4" fill="currentColor" stroke="none" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="product-copy">
+          <p class="section-kicker reveal">Produkten</p>
+          <h2 class="reveal">Byggd för att vara osynlig</h2>
+          <p class="reveal">Ett litet kort vid kassan eller bordet. Inga sladdar, inget batteri, inget krångel.</p>
+          <ul class="feature-list">
+            <li class="reveal">Ingen app krävs</li>
+            <li class="reveal">Fungerar med alla telefoner</li>
+            <li class="reveal">Redo på under en minut</li>
+          </ul>
         </div>
       </div>
     </section>
 
     <!-- Kontakt -->
-    <section id="kontakt" class="section">
-      <div class="container contact-grid">
-        <div class="contact-info">
-          <p class="section-kicker">Kontakt</p>
-          <h2>Hör av dig</h2>
-          <p class="contact-lead">Har du en fråga, en idé eller vill bara säga hej? Vi svarar gärna.</p>
+    <section id="kontakt" class="section section-dark">
+      <div class="container contact-inner">
+        <p class="section-kicker reveal">Kontakt</p>
+        <h2 class="reveal">Redo att komma igång?</h2>
+        <p class="contact-lead reveal">Hör av dig så berättar vi mer.</p>
 
-          <ul class="contact-list">
-            <li>
-              <span class="contact-icon">📧</span>
-              <div>
-                <span class="contact-label">E-post</span>
-                <a href="mailto:hip48741@gmail.com">hip48741@gmail.com</a>
-              </div>
-            </li>
-            <li>
-              <span class="contact-icon">📞</span>
-              <div>
-                <span class="contact-label">Telefon</span>
-                <a href="tel:+46700000000">+46 70 000 00 00</a>
-                <small class="placeholder-note">(ersätt med ert riktiga nummer)</small>
-              </div>
-            </li>
-            <li>
-              <span class="contact-icon">📍</span>
-              <div>
-                <span class="contact-label">Plats</span>
-                <span>Stockholm, Sverige</span>
-                <small class="placeholder-note">(ersätt med er riktiga ort/adress)</small>
-              </div>
-            </li>
-          </ul>
-        </div>
+        <ul class="contact-list reveal">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18v12H3z" /><path d="m3 7 9 6 9-6" /></svg>
+            <a href="mailto:hip48741@gmail.com">hip48741@gmail.com</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2Z" /></svg>
+            <a href="tel:+46700000000">+46 70 000 00 00</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+            <span>Stockholm, Sverige</span>
+          </li>
+        </ul>
 
-        <form class="contact-form" id="contactForm">
-          <div class="form-row">
-            <label for="name">Namn</label>
-            <input type="text" id="name" name="name" placeholder="Ditt namn" required />
-          </div>
-          <div class="form-row">
-            <label for="email">E-post</label>
-            <input type="email" id="email" name="email" placeholder="din@epost.se" required />
-          </div>
-          <div class="form-row">
-            <label for="message">Meddelande</label>
-            <textarea id="message" name="message" rows="5" placeholder="Skriv ditt meddelande här..." required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-block">Skicka meddelande</button>
-          <p class="form-note" id="formNote"></p>
-        </form>
+        <a href="mailto:hip48741@gmail.com" class="btn btn-primary btn-invert reveal">Skicka e-post</a>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span>&copy; <span id="year"></span> Rekomo. Alla rättigheter förbehållna.</span>
+      <span>&copy; <span id="year"></span> Rekomo</span>
       <a href="#top">Till toppen ↑</a>
     </div>
   </footer>
