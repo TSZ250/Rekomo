@@ -365,42 +365,93 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   align-items: center;
 }
 
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  margin-top: 8px;
-}
-.step {
-  display: flex;
-  align-items: flex-start;
-  gap: 22px;
-  border-top: 1px solid var(--border-dark);
-  padding-top: 24px;
-  opacity: 0;
-  transform: translateY(24px) scale(0.97);
-  filter: blur(6px);
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), filter 0.8s var(--ease);
-}
-.reveal-group.visible .step { opacity: 1; transform: none; filter: blur(0); }
-.reveal-group.visible .step:nth-child(1) { transition-delay: 0s; }
-.reveal-group.visible .step:nth-child(2) { transition-delay: 0.12s; }
-.reveal-group.visible .step:nth-child(3) { transition-delay: 0.24s; }
+/* Step-by-step timeline: numbered icon bubbles joined by a line that
+   draws itself downward as the section scrolls into view. Each step's
+   bubble lands first, then its text, then the line runs on to the next
+   one — so the sequence reads as an actual progression rather than three
+   things appearing at once. */
+.timeline { margin-top: 30px; }
 
-.step-num {
+.tl-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 20px;
+  padding-bottom: 34px;
+}
+.tl-step:last-child { padding-bottom: 0; }
+
+.tl-step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 26px;
+  margin-left: -0.5px;
+  top: 58px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--border-dark);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.7s var(--ease);
+}
+.timeline.visible .tl-step:not(:last-child)::before { transform: scaleY(1); }
+
+.tl-bubble {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--border-dark);
+  background: var(--bg-dark);
+  color: var(--text-invert);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.6);
+  filter: blur(5px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease),
+              filter 0.6s var(--ease), background 0.3s ease,
+              color 0.3s ease, border-color 0.3s ease;
+}
+.tl-bubble svg { width: 22px; height: 22px; }
+.timeline.visible .tl-bubble { opacity: 1; transform: none; filter: blur(0); }
+.tl-step:hover .tl-bubble {
+  background: var(--text-invert);
+  color: var(--bg-dark);
+  border-color: var(--text-invert);
+}
+
+.tl-body {
+  padding-top: 4px;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(5px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), filter 0.6s var(--ease);
+}
+.timeline.visible .tl-body { opacity: 1; transform: none; filter: blur(0); }
+
+.tl-label {
   display: block;
   font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
   font-weight: 600;
-  font-size: 22px;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--muted-invert);
-  flex-shrink: 0;
-  width: 28px;
-  transition: color 0.25s var(--ease);
+  margin-bottom: 7px;
 }
-.step h3 { color: var(--text-invert); margin-bottom: 4px; }
-.step p { margin: 0; font-size: 14.5px; }
-.step:hover .step-num { color: var(--text-invert); }
+.tl-body h3 { color: var(--text-invert); margin-bottom: 6px; }
+.tl-body p { margin: 0; font-size: 14.5px; max-width: 38ch; }
+
+/* Sequenced timings: bubble -> text -> connecting line, step after step */
+.timeline.visible .tl-step:nth-child(1) .tl-bubble { transition-delay: 0s; }
+.timeline.visible .tl-step:nth-child(1) .tl-body { transition-delay: 0.1s; }
+.timeline.visible .tl-step:nth-child(1)::before { transition-delay: 0.2s; }
+.timeline.visible .tl-step:nth-child(2) .tl-bubble { transition-delay: 0.32s; }
+.timeline.visible .tl-step:nth-child(2) .tl-body { transition-delay: 0.42s; }
+.timeline.visible .tl-step:nth-child(2)::before { transition-delay: 0.52s; }
+.timeline.visible .tl-step:nth-child(3) .tl-bubble { transition-delay: 0.64s; }
+.timeline.visible .tl-step:nth-child(3) .tl-body { transition-delay: 0.74s; }
 
 /* ---------- Produkt ---------- */
 .product-grid {
@@ -510,6 +561,10 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   .product-visual { order: -1; height: auto; padding: 20px 0 36px; }
   .hur-grid { grid-template-columns: 1fr; gap: 40px; }
   .hur-visual { order: -1; }
+  /* The timeline is inherently left-aligned (bubbles run down a left
+     column), so its heading stays left-aligned too rather than picking up
+     the centered treatment the other sections use on small screens. */
+  .hur-copy .kicker { justify-content: flex-start; }
   .founders { gap: 36px; }
 }
 
@@ -543,6 +598,15 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   .nav-toggle { display: flex; }
   .section { padding: 84px 0; }
   .hero { padding: 100px 0 80px; }
+
+  .tl-step { grid-template-columns: 46px 1fr; gap: 16px; padding-bottom: 30px; }
+  .tl-bubble { width: 46px; height: 46px; }
+  .tl-bubble svg { width: 20px; height: 20px; }
+  .tl-step:not(:last-child)::before { left: 23px; top: 52px; }
+
+  /* At full size the usage photo ate ~70% of the viewport height before the
+     timeline even started, making the section a long scroll on a phone. */
+  .usage-photo { max-width: 260px; }
 }
 
 /* ---------- Dark mode: hardcoded colors the --tokens above can't reach ----------
