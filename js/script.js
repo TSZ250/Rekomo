@@ -159,7 +159,6 @@ if (hasFinePointer && !prefersReducedMotion) {
   document.querySelectorAll('.btn').forEach(setupMagnetic);
   document.querySelectorAll('.device-frame').forEach((el) => setupTilt(el, 6));
   document.querySelectorAll('.card-stack').forEach((el) => setupTilt(el, 6));
-  document.querySelectorAll('.usage-photo').forEach((el) => setupTilt(el, 4));
 
   requestAnimationFrame(animateInteractions);
 }
