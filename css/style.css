@@ -286,8 +286,8 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 
 .device-frame {
   position: relative;
-  width: 280px;
-  height: 280px;
+  width: clamp(170px, 22vw, 230px);
+  aspect-ratio: 562 / 900;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,17 +320,123 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   50% { opacity: 1; transform: scale(1.12); }
 }
 
-.hero-photo {
+.hero-card-wrap { display: flex; flex-direction: column; align-items: center; }
+
+/* Flippable hero card: a real perspective/preserve-3d flip rather than a
+   fake cross-fade, so it reads as an actual object turning over. The back
+   is a plain placeholder in the card's own black (sampled from the photo,
+   #242424) until real photography of the back exists. */
+.card-flip {
+  all: unset;
   position: relative;
   z-index: 2;
-  width: clamp(170px, 22vw, 230px);
-  height: auto;
   display: block;
-  border-radius: 16px;
-  box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.45);
-  transform: rotate(-5deg);
+  width: clamp(170px, 22vw, 230px);
+  cursor: pointer;
+  perspective: 1400px;
 }
-.section-dark .hero-photo { box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.7); }
+.card-flip-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 562 / 900;
+  transform-style: preserve-3d;
+  transform: rotate(-5deg);
+  transition: transform 0.8s cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+.card-flip.flipped .card-flip-inner { transform: rotate(-5deg) rotateY(180deg); }
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.45);
+}
+.section-dark .card-face { box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.7); }
+
+.hero-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.card-back {
+  transform: rotateY(180deg);
+  background: #242424;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-back svg { width: 30%; height: 30%; color: rgba(255, 255, 255, 0.45); }
+
+/* Ambient "how it works" loop on the card face: NFC pulses, the rating
+   glows, then the card gives a small satisfied pop — the product's whole
+   story playing out on the hero image itself. */
+.card-front { animation: cardPop 6s ease-in-out infinite; }
+
+.fx-nfc {
+  position: absolute;
+  width: 34%;
+  aspect-ratio: 1;
+  left: 79%;
+  top: 90%;
+  transform: translate(-50%, -50%) scale(0.5);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 68%);
+  opacity: 0;
+  pointer-events: none;
+  animation: nfcPulse 6s ease-in-out infinite;
+}
+.fx-stars {
+  position: absolute;
+  width: 62%;
+  height: 16%;
+  left: 52%;
+  top: 77%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 205, 55, 0.55) 0%, rgba(255, 205, 55, 0) 70%);
+  filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  animation: starGlow 6s ease-in-out infinite;
+}
+
+@keyframes nfcPulse {
+  0%, 8% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  11% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  15% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.6); }
+  19% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  23% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.6); }
+  27%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+}
+@keyframes starGlow {
+  0%, 30% { opacity: 0; }
+  36% { opacity: 1; }
+  56% { opacity: 1; }
+  64%, 100% { opacity: 0; }
+}
+@keyframes cardPop {
+  0%, 58% { transform: scale(1); }
+  62% { transform: scale(1.045); }
+  68% { transform: scale(0.985); }
+  74%, 100% { transform: scale(1); }
+}
+
+.flip-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.flip-hint svg { width: 13px; height: 13px; animation: hintSpin 3s ease-in-out infinite; }
+@keyframes hintSpin {
+  0%, 15%, 100% { transform: rotate(0deg); }
+  55% { transform: rotate(200deg); }
+}
 
 /* Two-card stack for the product section */
 .card-stack { position: relative; width: 260px; height: 300px; transition: transform 0.2s ease-out; }

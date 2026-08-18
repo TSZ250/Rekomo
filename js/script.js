@@ -20,6 +20,19 @@ if (navToggle && nav) {
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+// Hero card flip (tap/click to see the back)
+const heroCardFlip = document.getElementById('heroCardFlip');
+if (heroCardFlip) {
+  heroCardFlip.addEventListener('click', () => {
+    const flipped = heroCardFlip.classList.toggle('flipped');
+    heroCardFlip.setAttribute('aria-pressed', String(flipped));
+    heroCardFlip.setAttribute(
+      'aria-label',
+      flipped ? 'Vänd tillbaka till framsidan' : 'Vänd på kortet och se baksidan'
+    );
+  });
+}
+
 // Reveal-on-scroll animations (single elements + grouped/staggered lists)
 const revealEls = document.querySelectorAll('.reveal, .reveal-group');
 
