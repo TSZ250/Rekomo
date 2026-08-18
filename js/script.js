@@ -41,8 +41,7 @@ if ('IntersectionObserver' in window && revealEls.length) {
   revealEls.forEach((el) => el.classList.add('visible'));
 }
 
-// Scroll progress bar + header shadow-on-scroll (rAF-throttled)
-const progressBar = document.getElementById('scrollProgress');
+// Header shadow-on-scroll (rAF-throttled)
 const header = document.querySelector('.site-header');
 let scrollTicking = false;
 
@@ -51,12 +50,7 @@ function onScroll() {
   scrollTicking = true;
   window.requestAnimationFrame(() => {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
-
-    if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
     if (header) header.classList.toggle('scrolled', scrollTop > 8);
-
     scrollTicking = false;
   });
 }

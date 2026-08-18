@@ -102,13 +102,18 @@ h2 { font-size: clamp(30px, 4.5vw, 42px); margin-bottom: 18px; }
 h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
 p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 
-/* ---------- Reveal-on-scroll ---------- */
+/* ---------- Reveal-on-scroll ----------
+   Content settles into place rather than just sliding up: a soft blur
+   resolves into focus alongside a gentle scale + rise, which reads as
+   considerably more "crafted" than a plain fade. */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transform: translateY(26px) scale(0.97);
+  filter: blur(7px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease), filter 0.9s var(--ease);
+  will-change: opacity, transform, filter;
 }
-.reveal.visible { opacity: 1; transform: none; }
+.reveal.visible { opacity: 1; transform: none; filter: blur(0); }
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -163,20 +168,6 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 .section-dark .btn-ghost { color: var(--text-invert); border-color: var(--border-dark); }
 .section-dark .btn-ghost::before { background: var(--text-invert); }
 .section-dark .btn-ghost:hover { color: var(--bg-dark); border-color: var(--text-invert); }
-
-/* ---------- Scroll progress ---------- */
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: var(--text);
-  transform: scaleX(0);
-  transform-origin: left;
-  z-index: 1000;
-  pointer-events: none;
-}
 
 /* ---------- Header ---------- */
 .site-header {
@@ -261,7 +252,19 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   gap: 56px;
   margin-top: 40px;
 }
-.founder { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.founder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(24px) scale(0.94);
+  filter: blur(6px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), filter 0.8s var(--ease);
+}
+.founders.reveal-group.visible .founder { opacity: 1; transform: none; filter: blur(0); }
+.founders.reveal-group.visible .founder:nth-child(1) { transition-delay: 0s; }
+.founders.reveal-group.visible .founder:nth-child(2) { transition-delay: 0.15s; }
 .founder-avatar {
   width: 60px; height: 60px;
   border-radius: 50%;
@@ -375,10 +378,11 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   border-top: 1px solid var(--border-dark);
   padding-top: 24px;
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transform: translateY(24px) scale(0.97);
+  filter: blur(6px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), filter 0.8s var(--ease);
 }
-.reveal-group.visible .step { opacity: 1; transform: none; }
+.reveal-group.visible .step { opacity: 1; transform: none; filter: blur(0); }
 .reveal-group.visible .step:nth-child(1) { transition-delay: 0s; }
 .reveal-group.visible .step:nth-child(2) { transition-delay: 0.12s; }
 .reveal-group.visible .step:nth-child(3) { transition-delay: 0.24s; }
@@ -416,10 +420,11 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   font-weight: 500;
   color: var(--text);
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), padding-left 0.25s var(--ease);
+  transform: translateY(20px) scale(0.97);
+  filter: blur(6px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease), filter 0.7s var(--ease), padding-left 0.25s var(--ease);
 }
-.feature-list.reveal-group.visible li { opacity: 1; transform: none; }
+.feature-list.reveal-group.visible li { opacity: 1; transform: none; filter: blur(0); }
 .feature-list li:nth-child(1) { transition-delay: 0s; }
 .feature-list li:nth-child(2) { transition-delay: 0.1s; }
 .feature-list li:nth-child(3) { transition-delay: 0.2s; }
@@ -455,11 +460,12 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   padding: 18px 0;
   border-bottom: 1px solid var(--border-dark);
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), padding-left 0.25s var(--ease);
+  transform: translateY(20px) scale(0.97);
+  filter: blur(6px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease), filter 0.7s var(--ease), padding-left 0.25s var(--ease);
 }
 .contact-list li:hover { padding-left: 8px; }
-.contact-list.reveal-group.visible li { opacity: 1; transform: none; }
+.contact-list.reveal-group.visible li { opacity: 1; transform: none; filter: blur(0); }
 .contact-list li:nth-child(1) { transition-delay: 0s; }
 .contact-list li:nth-child(2) { transition-delay: 0.1s; }
 .contact-list li:nth-child(3) { transition-delay: 0.2s; }
