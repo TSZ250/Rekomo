@@ -380,6 +380,27 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 /* Two-card stack for the product section */
 .card-stack { position: relative; width: 260px; height: 300px; transition: transform 0.2s ease-out; }
 .fine-pointer .card-stack { transition: none; }
+.card-stack::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 18px 18px;
+  -webkit-mask-image: radial-gradient(circle, black 18%, transparent 62%);
+  mask-image: radial-gradient(circle, black 18%, transparent 62%);
+}
+.card-stack::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 150px;
+  height: 60px;
+  margin-left: -75px;
+  background: radial-gradient(ellipse, rgba(10, 10, 10, 0.2) 0%, transparent 72%);
+  filter: blur(6px);
+  animation: breathe 4.5s ease-in-out infinite;
+}
 .stack-photo {
   position: absolute;
   width: clamp(140px, 20vw, 185px);
