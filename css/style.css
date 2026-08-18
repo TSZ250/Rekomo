@@ -42,6 +42,22 @@ body::before {
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Follows the OS/phone light-or-dark setting automatically (no toggle).
+   The site already alternates "light" and "dark" sections as a deliberate
+   design rhythm in light mode (white vs. near-black). In dark mode that
+   rhythm is kept, just expressed as two dark shades instead of white/black
+   so nothing ever forces a blinding white panel on a dark-mode screen. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161616;
+    --text: #f2f2f0;
+    --muted: #a3a3a0;
+    --border: #2c2c2a;
+
+    --bg-dark: #000000;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
@@ -492,6 +508,20 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 }
 
 @media (max-width: 720px) {
+  /* The sticky, translucent+blurred header looked broken on mobile: with
+     the header pinned over content for the whole scroll, its 82%-opacity
+     background let text from whatever section was underneath show through
+     and visually collide with the logo/menu button. Simplest, most robust
+     fix: don't pin it on small screens at all — it scrolls away with the
+     page like a normal header, and gets a fully solid background so there
+     is never anything to see through even for the instant it's on screen. */
+  .site-header {
+    position: relative;
+    background: var(--bg);
+    backdrop-filter: none;
+  }
+  .site-header.scrolled { box-shadow: none; }
+
   .nav {
     position: absolute;
     top: 72px; left: 0; right: 0;
@@ -507,4 +537,15 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   .nav-toggle { display: flex; }
   .section { padding: 84px 0; }
   .hero { padding: 100px 0 80px; }
+}
+
+/* ---------- Dark mode: hardcoded colors the --tokens above can't reach ----------
+   Everything using var(--bg)/var(--text)/etc. already re-themes itself from
+   the :root override further up. These are the few places a literal
+   rgba(255,255,255,…)/rgba(0,0,0,…) was used instead (desktop's translucent
+   header, and the glow behind product photos on what are "light" sections
+   in light mode) — they'd otherwise stay light-mode-colored forever. */
+@media (prefers-color-scheme: dark) {
+  .site-header { background: rgba(22, 22, 22, 0.82); }
+  .device-frame::after { background: radial-gradient(ellipse, rgba(255, 255, 255, 0.16) 0%, transparent 72%); }
 }
