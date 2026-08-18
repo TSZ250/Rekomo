@@ -293,7 +293,7 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   justify-content: center;
   transition: transform 0.2s ease-out;
 }
-.fine-pointer .device-frame, .touch-tilt .device-frame { transition: none; }
+.fine-pointer .device-frame { transition: none; }
 .device-frame::before {
   content: '';
   position: absolute;
@@ -334,7 +334,7 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 
 /* Two-card stack for the product section */
 .card-stack { position: relative; width: 260px; height: 300px; transition: transform 0.2s ease-out; }
-.fine-pointer .card-stack, .touch-tilt .card-stack { transition: none; }
+.fine-pointer .card-stack { transition: none; }
 .stack-photo {
   position: absolute;
   width: clamp(140px, 20vw, 185px);
@@ -355,7 +355,7 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.6);
   transition: transform 0.2s ease-out;
 }
-.fine-pointer .usage-photo, .touch-tilt .usage-photo { transition: none; }
+.fine-pointer .usage-photo { transition: none; }
 
 /* ---------- Hur funkar det: photo + steps ---------- */
 .hur-grid {

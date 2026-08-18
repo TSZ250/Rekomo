@@ -139,27 +139,6 @@ function setupTilt(el, maxDeg) {
   tiltStates.push(state);
 }
 
-// Same idea, but for touch devices: tilting the phone itself (via the
-// gyroscope) tilts the product photos, mirroring the mouse-driven effect
-// above. Only the left-right axis (gamma) is used, per how phones are
-// actually held/moved. The very first orientation reading becomes the
-// "neutral" position, so it responds to however the phone happens to be
-// held rather than assuming a fixed angle.
-const deviceTiltStates = [];
-let gammaBaseline = null;
-let gammaOffset = 0;
-const GAMMA_RANGE = 22; // degrees of phone tilt that reach the card's max angle
-
-function setupDeviceTilt(el, maxDeg) {
-  deviceTiltStates.push({ el, maxDeg, cry: 0 });
-}
-
-function handleDeviceOrientation(e) {
-  if (e.gamma === null) return;
-  if (gammaBaseline === null) gammaBaseline = e.gamma;
-  gammaOffset = Math.max(-GAMMA_RANGE, Math.min(GAMMA_RANGE, e.gamma - gammaBaseline));
-}
-
 function animateInteractions() {
   magneticStates.forEach((s) => {
     s.cx += (s.tx - s.cx) * LERP;
@@ -170,11 +149,6 @@ function animateInteractions() {
     s.crx += (s.trx - s.crx) * LERP;
     s.cry += (s.trry - s.cry) * LERP;
     s.el.style.transform = `perspective(900px) rotateX(${s.crx.toFixed(2)}deg) rotateY(${s.cry.toFixed(2)}deg)`;
-  });
-  deviceTiltStates.forEach((s) => {
-    const target = (gammaOffset / GAMMA_RANGE) * s.maxDeg;
-    s.cry += (target - s.cry) * LERP;
-    s.el.style.transform = `perspective(900px) rotateY(${s.cry.toFixed(2)}deg)`;
   });
   requestAnimationFrame(animateInteractions);
 }
@@ -188,39 +162,4 @@ if (hasFinePointer && !prefersReducedMotion) {
   document.querySelectorAll('.usage-photo').forEach((el) => setupTilt(el, 4));
 
   requestAnimationFrame(animateInteractions);
-}
-
-const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-if (hasTouch && !hasFinePointer && !prefersReducedMotion && typeof DeviceOrientationEvent !== 'undefined') {
-  document.documentElement.classList.add('touch-tilt');
-
-  document.querySelectorAll('.device-frame').forEach((el) => setupDeviceTilt(el, 6));
-  document.querySelectorAll('.card-stack').forEach((el) => setupDeviceTilt(el, 6));
-  document.querySelectorAll('.usage-photo').forEach((el) => setupDeviceTilt(el, 4));
-
-  const startDeviceTilt = () => {
-    window.addEventListener('deviceorientation', handleDeviceOrientation);
-    requestAnimationFrame(animateInteractions);
-  };
-
-  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-    // iOS 13+ gates motion access behind an explicit permission prompt,
-    // which can only be triggered from within a user gesture — so we wait
-    // for the visitor's first tap anywhere on the page before asking.
-    document.addEventListener(
-      'touchend',
-      () => {
-        DeviceOrientationEvent.requestPermission()
-          .then((response) => {
-            if (response === 'granted') startDeviceTilt();
-          })
-          .catch(() => {});
-      },
-      { once: true }
-    );
-  } else {
-    // Android and other browsers: no permission dance needed.
-    startDeviceTilt();
-  }
 }
