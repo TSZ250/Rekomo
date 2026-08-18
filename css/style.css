@@ -368,20 +368,13 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 .card-back svg { width: 30%; height: 30%; color: rgba(255, 255, 255, 0.45); }
 
 .flip-hint {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 18px;
-  font-size: 11px;
+  display: block;
+  margin-top: 16px;
+  font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
-}
-.flip-hint svg { width: 13px; height: 13px; animation: hintSpin 3s ease-in-out infinite; }
-@keyframes hintSpin {
-  0%, 15%, 100% { transform: rotate(0deg); }
-  55% { transform: rotate(200deg); }
 }
 
 /* Two-card stack for the product section */
