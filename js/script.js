@@ -33,6 +33,23 @@ if (heroCardFlip) {
   });
 }
 
+// Product colour swatches bring the chosen card to the front of the stack
+const cardStack = document.getElementById('cardStack');
+const swatches = document.querySelectorAll('.swatch');
+
+if (cardStack && swatches.length) {
+  swatches.forEach((swatch) => {
+    swatch.addEventListener('click', () => {
+      cardStack.dataset.active = swatch.dataset.color;
+      swatches.forEach((other) => {
+        const isActive = other === swatch;
+        other.classList.toggle('is-active', isActive);
+        other.setAttribute('aria-pressed', String(isActive));
+      });
+    });
+  });
+}
+
 // Reveal-on-scroll animations (single elements + grouped/staggered lists)
 const revealEls = document.querySelectorAll('.reveal, .reveal-group');
 

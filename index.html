@@ -139,21 +139,33 @@
     <section id="produkt" class="section">
       <div class="container product-grid">
         <div class="product-visual reveal">
-          <div class="card-stack">
-            <img src="assets/product-white.jpg" alt="Rekomo NFC-kort i vitt" class="stack-photo stack-back" width="562" height="900" />
-            <img src="assets/product-black.jpg" alt="Rekomo NFC-kort i svart" class="stack-photo stack-front" width="562" height="900" />
+          <div class="card-stack" id="cardStack" data-active="black">
+            <img src="assets/product-white.jpg" alt="Rekomo NFC-kort i vitt" class="stack-photo stack-white" width="562" height="900" />
+            <img src="assets/product-black.jpg" alt="Rekomo NFC-kort i svart" class="stack-photo stack-black" width="562" height="900" />
           </div>
         </div>
 
         <div class="product-copy">
           <p class="kicker reveal">Produkten</p>
           <h2 class="reveal">Byggd för att vara osynlig</h2>
-          <p class="reveal">Ett litet kort vid kassan eller bordet. Inga sladdar, inget batteri, inget krångel. Finns i svart och vitt.</p>
+          <p class="reveal">Ett litet kort vid kassan eller bordet. Inga sladdar, inget batteri, inget krångel.</p>
           <ul class="feature-list reveal-group">
             <li><span class="num">01</span>Ingen app krävs</li>
             <li><span class="num">02</span>Fungerar med alla telefoner</li>
             <li><span class="num">03</span>Redo på under en minut</li>
           </ul>
+
+          <div class="finish-row reveal">
+            <span class="finish-label">Finns i</span>
+            <div class="finish-swatches">
+              <button type="button" class="swatch is-active" data-color="black" aria-pressed="true">
+                <span class="swatch-dot" aria-hidden="true"></span>Svart
+              </button>
+              <button type="button" class="swatch" data-color="white" aria-pressed="false">
+                <span class="swatch-dot" aria-hidden="true"></span>Vit
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
