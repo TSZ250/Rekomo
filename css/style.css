@@ -557,9 +557,9 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 .feature-list { margin-top: 26px; border-top: 1px solid var(--border); }
 .feature-list li {
   display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 17px 0;
+  align-items: baseline;
+  gap: 20px;
+  padding: 21px 0;
   border-bottom: 1px solid var(--border);
   font-weight: 500;
   color: var(--text);
@@ -573,23 +573,21 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 .feature-list li:nth-child(2) { transition-delay: 0.1s; }
 .feature-list li:nth-child(3) { transition-delay: 0.2s; }
 .feature-list li:hover { padding-left: 10px; }
+/* The numerals read as editorial counters rather than little buttons:
+   large, set in the display face, sharing a baseline with the label so
+   the row has one clear typographic line instead of two competing marks. */
 .feature-list .num {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
+  font-size: 21px;
   font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: var(--muted);
-  letter-spacing: 0.02em;
+  width: 40px;
   flex-shrink: 0;
-  transition: color 0.25s var(--ease), background 0.25s var(--ease), border-color 0.25s var(--ease);
+  transition: color 0.3s var(--ease);
 }
-.feature-list li:hover .num { color: var(--bg); background: var(--text); border-color: var(--text); }
+.feature-list li:hover .num { color: var(--text); }
 
 /* Colour options — the two finishes we actually sell, shown as real
    swatches rather than buried in a sentence. Picking one brings that
