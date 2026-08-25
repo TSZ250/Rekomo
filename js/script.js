@@ -139,16 +139,32 @@ const LERP = 0.15;
 const magneticStates = [];
 const tiltStates = [];
 
+// The loop only runs while something is actually in motion. It used to call
+// itself unconditionally, so every page had a JS callback plus a style write
+// per element on every frame forever — burning frame budget even when the
+// mouse had not moved in minutes. Now each interaction wakes it and it puts
+// itself back to sleep once everything has settled.
+const SETTLED = 0.01;
+let loopAwake = false;
+
+function wakeLoop() {
+  if (loopAwake) return;
+  loopAwake = true;
+  requestAnimationFrame(animateInteractions);
+}
+
 function setupMagnetic(el) {
   const state = { el, tx: 0, ty: 0, cx: 0, cy: 0 };
   el.addEventListener('mousemove', (e) => {
     const rect = el.getBoundingClientRect();
     state.tx = (e.clientX - rect.left - rect.width / 2) * 0.25;
     state.ty = (e.clientY - rect.top - rect.height / 2) * 0.35;
+    wakeLoop();
   });
   el.addEventListener('mouseleave', () => {
     state.tx = 0;
     state.ty = 0;
+    wakeLoop();
   });
   magneticStates.push(state);
 }
@@ -161,26 +177,47 @@ function setupTilt(el, maxDeg) {
     const py = (e.clientY - rect.top) / rect.height;
     state.trx = (0.5 - py) * maxDeg * 2;
     state.trry = (px - 0.5) * maxDeg * 2;
+    wakeLoop();
   });
   el.addEventListener('mouseleave', () => {
     state.trx = 0;
     state.trry = 0;
+    wakeLoop();
   });
   tiltStates.push(state);
 }
 
 function animateInteractions() {
+  let moving = false;
+
   magneticStates.forEach((s) => {
-    s.cx += (s.tx - s.cx) * LERP;
-    s.cy += (s.ty - s.cy) * LERP;
+    if (Math.abs(s.tx - s.cx) < SETTLED && Math.abs(s.ty - s.cy) < SETTLED) {
+      if (s.cx === s.tx && s.cy === s.ty) return;
+      s.cx = s.tx;
+      s.cy = s.ty;
+    } else {
+      s.cx += (s.tx - s.cx) * LERP;
+      s.cy += (s.ty - s.cy) * LERP;
+      moving = true;
+    }
     s.el.style.transform = `translate(${s.cx.toFixed(2)}px, ${s.cy.toFixed(2)}px)`;
   });
+
   tiltStates.forEach((s) => {
-    s.crx += (s.trx - s.crx) * LERP;
-    s.cry += (s.trry - s.cry) * LERP;
+    if (Math.abs(s.trx - s.crx) < SETTLED && Math.abs(s.trry - s.cry) < SETTLED) {
+      if (s.crx === s.trx && s.cry === s.trry) return;
+      s.crx = s.trx;
+      s.cry = s.trry;
+    } else {
+      s.crx += (s.trx - s.crx) * LERP;
+      s.cry += (s.trry - s.cry) * LERP;
+      moving = true;
+    }
     s.el.style.transform = `perspective(900px) rotateX(${s.crx.toFixed(2)}deg) rotateY(${s.cry.toFixed(2)}deg)`;
   });
-  requestAnimationFrame(animateInteractions);
+
+  if (moving) requestAnimationFrame(animateInteractions);
+  else loopAwake = false;
 }
 
 if (hasFinePointer && !prefersReducedMotion) {
@@ -189,6 +226,6 @@ if (hasFinePointer && !prefersReducedMotion) {
   document.querySelectorAll('.btn').forEach(setupMagnetic);
   document.querySelectorAll('.device-frame').forEach((el) => setupTilt(el, 6));
   document.querySelectorAll('.card-stack').forEach((el) => setupTilt(el, 6));
-
-  requestAnimationFrame(animateInteractions);
+  // No kick-off frame: everything rests at zero, so the first mouse move
+  // starts the loop and it sleeps again as soon as things settle.
 }
