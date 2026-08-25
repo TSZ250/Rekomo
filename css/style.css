@@ -695,42 +695,73 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 .contact-inner h2 { max-width: 20ch; margin-left: auto; margin-right: auto; }
 .contact-lead { margin: 0 auto 48px; }
 
-.contact-list {
-  max-width: 420px;
-  margin: 0 auto 48px;
-  border-top: 1px solid var(--border-dark);
-  text-align: left;
+/* Two ways to reach us, each its own target rather than a row in a table.
+   The whole card is the link, so the tap area is the card and not just the
+   few pixels of text — which matters most on a phone, where these are the
+   two things a visitor actually came for. */
+.contact-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  max-width: 620px;
+  margin: 0 auto 44px;
 }
-.contact-list li {
+.contact-method {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border-dark);
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 22px 28px;
+  border: 1px solid var(--border-dark);
+  border-radius: 18px;
+  text-align: center;
   opacity: 0;
   transform: translateY(20px) scale(0.97);
   filter: blur(6px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease), filter 0.7s var(--ease), padding-left 0.25s var(--ease);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease),
+              filter 0.7s var(--ease), border-color 0.3s var(--ease),
+              background 0.3s var(--ease);
 }
-.contact-list li:hover { padding-left: 8px; }
-.contact-list.reveal-group.visible li { opacity: 1; transform: none; filter: blur(0); }
-.contact-list li:nth-child(1) { transition-delay: 0s; }
-.contact-list li:nth-child(2) { transition-delay: 0.1s; }
-.contact-list li:nth-child(3) { transition-delay: 0.2s; }
-.contact-list .label {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 11.5px;
-  color: var(--muted-invert);
-  flex-shrink: 0;
+.contact-methods.reveal-group.visible .contact-method { opacity: 1; transform: none; filter: blur(0); }
+.contact-methods.visible .contact-method:nth-child(2) { transition-delay: 0.1s; }
+.contact-method:hover {
+  border-color: color-mix(in srgb, var(--text-invert) 45%, transparent);
+  background: rgba(255, 255, 255, 0.035);
 }
-.contact-list a, .contact-list .value {
-  font-weight: 500;
+
+.cm-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--border-dark);
   color: var(--text-invert);
-  transition: opacity 0.2s ease;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
 }
-.contact-list a:hover { opacity: 0.65; }
+.cm-icon svg { width: 23px; height: 23px; }
+.contact-method:hover .cm-icon {
+  background: var(--text-invert);
+  color: var(--bg-dark);
+  border-color: var(--text-invert);
+}
+
+.cm-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-invert);
+  margin-bottom: 7px;
+}
+.cm-value {
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--text-invert);
+  overflow-wrap: anywhere;
+}
 
 .contact-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
@@ -847,6 +878,10 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   }
   .hero-actions .btn,
   .contact-actions .btn { width: 100%; }
+
+  /* Side by side the e-mail address has to break mid-word on a phone;
+     stacked it gets the full width and stays on one line. */
+  .contact-methods { grid-template-columns: 1fr; gap: 14px; }
 }
 
 /* ---------- Dark mode: hardcoded colors the --tokens above can't reach ----------
