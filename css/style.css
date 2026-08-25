@@ -15,17 +15,16 @@ img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
 
-/* Subtle film-grain texture over the whole page for a tactile, less "flat" feel */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nMC44NScgbnVtT2N0YXZlcz0nMicgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjxmZUNvbG9yTWF0cml4IHR5cGU9J3NhdHVyYXRlJyB2YWx1ZXM9JzAnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCglMjNuKScvPjwvc3ZnPgo=");
-}
+/* A full-viewport film-grain layer used to sit here (position: fixed, z-index
+   999, mix-blend-mode: overlay). It was removed, not restyled: a blended layer
+   covering the whole viewport makes the browser re-composite the entire screen
+   on every repaint, which roughly halved the frame rate everywhere on the page
+   (~37ms/frame with it, ~20ms without) — most noticeable on the animated
+   timeline in "Så funkar det". Measuring what it actually drew showed it was
+   invisible: over the dark sections the rendered pixels were identical with and
+   without it, and over the light sections it moved the mean by 0.03/255. All
+   cost, no picture. If grain is ever wanted back, it needs a visible opacity
+   without mix-blend-mode, which does tint white surfaces grey. */
 
 /* ---------- Design tokens (true, neutral black & white) ---------- */
 :root {
