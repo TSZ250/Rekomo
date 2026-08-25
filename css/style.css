@@ -710,23 +710,15 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 32px 22px 28px;
-  border: 1px solid var(--border-dark);
-  border-radius: 18px;
+  padding: 8px 12px;
   text-align: center;
   opacity: 0;
   transform: translateY(20px) scale(0.97);
   filter: blur(6px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease),
-              filter 0.7s var(--ease), border-color 0.3s var(--ease),
-              background 0.3s var(--ease);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease), filter 0.7s var(--ease);
 }
 .contact-methods.reveal-group.visible .contact-method { opacity: 1; transform: none; filter: blur(0); }
 .contact-methods.visible .contact-method:nth-child(2) { transition-delay: 0.1s; }
-.contact-method:hover {
-  border-color: color-mix(in srgb, var(--text-invert) 45%, transparent);
-  background: rgba(255, 255, 255, 0.035);
-}
 
 .cm-icon {
   display: flex;
