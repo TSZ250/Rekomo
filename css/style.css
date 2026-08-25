@@ -607,9 +607,9 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 .feature-list { margin-top: 26px; border-top: 1px solid var(--border); }
 .feature-list li {
   display: flex;
-  align-items: baseline;
-  gap: 20px;
-  padding: 21px 0;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
   border-bottom: 1px solid var(--border);
   font-weight: 500;
   color: var(--text);
@@ -623,21 +623,18 @@ p { color: var(--muted); margin: 0 0 16px; max-width: 46ch; }
 .feature-list li:nth-child(2) { transition-delay: 0.1s; }
 .feature-list li:nth-child(3) { transition-delay: 0.2s; }
 .feature-list li:hover { padding-left: 10px; }
-/* The numerals read as editorial counters rather than little buttons:
-   large, set in the display face, sharing a baseline with the label so
-   the row has one clear typographic line instead of two competing marks. */
-.feature-list .num {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 21px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--muted);
-  width: 40px;
+/* Ticks, not numbers. These three are independent facts about the product,
+   not an ordered sequence, so numbering them added an order that doesn't
+   exist and read as filler. The one real sequence on the page — the three
+   steps under "Så funkar det" — keeps its numbering, and now owns it. */
+.feature-list .feat-check {
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
+  color: var(--muted);
   transition: color 0.3s var(--ease);
 }
-.feature-list li:hover .num { color: var(--text); }
+.feature-list li:hover .feat-check { color: var(--text); }
 
 /* Colour options — the two finishes we actually sell, shown as real
    swatches rather than buried in a sentence. Picking one brings that
