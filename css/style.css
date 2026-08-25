@@ -79,15 +79,18 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .kicker {
   display: flex;
   align-items: center;
-  gap: 12px;
+  /* It's a <p>, so without this it inherits the 46ch reading measure meant
+     for body copy. In sections wider than that the label was centring
+     inside a 416px box pinned to the left edge rather than in the section,
+     which left "Så funkar det" and "Kontakt" visibly off-centre. */
+  max-width: none;
   color: var(--muted);
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  font-size: 11.5px;
+  font-size: 13px;
   margin: 0 0 20px;
 }
-.kicker::before { content: ''; width: 22px; height: 1px; background: currentColor; }
 .section-dark .kicker { color: var(--muted-invert); }
 
 h1, h2, h3 {
